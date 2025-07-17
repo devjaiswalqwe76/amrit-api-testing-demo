@@ -1,0 +1,94 @@
+{
+  "info": {
+    "name": "Amrit API Test Suite",
+    "description": "Postman collection with GET and POST tests for reqres.in demo APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET Users Page 2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://reqres.in/api/users?page=2",
+          "protocol": "https",
+          "host": ["reqres", "in"],
+          "path": ["api", "users"],
+          "query": [
+            { "key": "page", "value": "2" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Page number is 2\", function () {",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.page).to.eql(2);",
+              "});",
+              "",
+              "pm.test(\"User count is 6\", function () {",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.data.length).to.eql(6);",
+              "});",
+              "",
+              "pm.test(\"First user's email is correct\", function () {",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.data[0].email).to.eql(\"michael.lawson@reqres.in\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Amrit\",\n  \"job\": \"QA Engineer\"\n}"
+        },
+        "url": {
+          "raw": "https://reqres.in/api/users",
+          "protocol": "https",
+          "host": ["reqres", "in"],
+          "path": ["api", "users"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response contains id and createdAt\", function () {",
+              "  const data = pm.response.json();",
+              "  pm.expect(data).to.have.property(\"id\");",
+              "  pm.expect(data).to.have.property(\"createdAt\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
